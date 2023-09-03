@@ -35,12 +35,9 @@
         <button class="reset-button" disabled>Reset</button>
     </div>
     <script>
-        // JavaScript variables to keep track of game state
         let currentPlayer = 'X';
         let gameBoard = ['', '', '', '', '', '', '', '', ''];
         let gameActive = true;
-
-        // JavaScript function to handle a player's move
         function handleMove(index) {
             if (gameBoard[index] === '' && gameActive) {
                 gameBoard[index] = currentPlayer;
@@ -50,44 +47,32 @@
                 checkWinner();
             }
         }
-
-        // JavaScript function to toggle the current player
         function togglePlayer() {
             currentPlayer = currentPlayer === 'X' ? 'O' : 'X';
             document.querySelector('.result').textContent = `Player ${currentPlayer}'s Turn`;
         }
-
-        // JavaScript function to check for a winner or a draw
         function checkWinner() {
-            // Define winning combinations
             const winCombinations = [
-                [0, 1, 2], [3, 4, 5], [6, 7, 8], // Rows
-                [0, 3, 6], [1, 4, 7], [2, 5, 8], // Columns
-                [0, 4, 8], [2, 4, 6] // Diagonals
+                [0, 1, 2], [3, 4, 5], [6, 7, 8],
+                [0, 3, 6], [1, 4, 7], [2, 5, 8], 
+                [0, 4, 8], [2, 4, 6] 
             ];
-
             for (const combination of winCombinations) {
                 const [a, b, c] = combination;
                 if (gameBoard[a] && gameBoard[a] === gameBoard[b] && gameBoard[a] === gameBoard[c]) {
-                    // We have a winner
                     document.querySelector('.result').textContent = `Player ${currentPlayer} wins!`;
                     document.querySelector('.reset-button').disabled = false;
                     gameActive = false;
                     return;
                 }
             }
-
-            // Check for a draw
             if (!gameBoard.includes('')) {
                 document.querySelector('.result').textContent = "It's a draw!";
                 document.querySelector('.reset-button').disabled = false;
                 gameActive = false;
             }
         }
-
-        // JavaScript function to reset the game
         function resetGame() {
-            // Reset game variables and clear the board
             currentPlayer = 'X';
             gameBoard = ['', '', '', '', '', '', '', '', ''];
             document.querySelectorAll('.bt').forEach(input => {
@@ -98,8 +83,6 @@
             document.querySelector('.reset-button').disabled = true;
             gameActive = true;
         }
-
-        // JavaScript event listeners for player moves and reset button
         document.querySelectorAll('.bt').forEach(input => {
             input.addEventListener('click', () => {
                 const index = input.getAttribute('data-index');
