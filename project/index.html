@@ -33,6 +33,85 @@
     <div class="reset-section">
         <button class="reset-button" disabled>Reset</button>
     </div>
-    <script src="script.js"></script>
+    <script>
+        // JavaScript variables to keep track of game state
+        let currentPlayer = 'X';
+        let gameBoard = ['', '', '', '', '', '', '', '', ''];
+        let gameActive = true;
+
+        // JavaScript function to handle a player's move
+        function handleMove(index) {
+            if (gameBoard[index] === '' && gameActive) {
+                gameBoard[index] = currentPlayer;
+                document.querySelectorAll('.bt')[index].value = currentPlayer;
+                togglePlayer();
+                checkWinner();
+            }
+        }
+
+        // JavaScript function to toggle the current player
+        function togglePlayer() {
+            currentPlayer = currentPlayer === 'X' ? 'O' : 'X';
+            document.querySelector('.result').textContent = `Player ${currentPlayer}'s Turn`;
+        }
+
+        // JavaScript function to check for a winner or a draw
+        function checkWinner() {
+    // Define winning combinations
+    const winCombinations = [
+        [0, 1, 2], [3, 4, 5], [6, 7, 8], // Rows
+        [0, 3, 6], [1, 4, 7], [2, 5, 8], // Columns
+        [0, 4, 8], [2, 4, 6] // Diagonals
+    ];
+
+    for (const combination of winCombinations) {
+        const [a, b, c] = combination;
+        if (gameBoard[a] && gameBoard[a] === gameBoard[b] && gameBoard[a] === gameBoard[c]) {
+            // We have a winner
+            document.querySelector('.result').textContent = `Player ${currentPlayer} wins!`;
+            document.querySelector('.reset-button').disabled = false;
+            gameActive = false;
+            return;
+        }
+    }
+
+    // Check for a draw
+    if (!gameBoard.includes('')) {
+        document.querySelector('.result').textContent = "It's a draw!";
+        document.querySelector('.reset-button').disabled = false;
+        gameActive = false;
+    }
+}
+
+            // Implement your winning condition checks here
+            // For example, you can check rows, columns, and diagonals for a win.
+            // If there's a winner, update the result and disable the reset button
+            // If it's a draw, update the result and disable the reset button
+        
+
+        // JavaScript function to reset the game
+        function resetGame() {
+            // Reset game variables and clear the board
+            currentPlayer = 'X';
+            gameBoard = ['', '', '', '', '', '', '', '', ''];
+            document.querySelectorAll('.bt').forEach(input => {
+                input.value = '';
+            });
+            document.querySelector('.result').textContent = `Player ${currentPlayer}'s Turn`;
+            document.querySelector('.reset-button').disabled = true;
+            gameActive = true;
+        }
+
+        // JavaScript event listeners for player moves and reset button
+        document.querySelectorAll('.bt').forEach((input, index) => {
+            input.addEventListener('click', () => {
+                handleMove(index);
+            });
+        });
+
+        document.querySelector('.reset-button').addEventListener('click', () => {
+            resetGame();
+        });
+    </script>
 </body>
 </html>
